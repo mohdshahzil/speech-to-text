@@ -1,25 +1,51 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
+const App = () => {
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+  } = useSpeechRecognition();
 
-function App() {
+  if (!browserSupportsSpeechRecognition) {
+    return <span>Browser doesn't support speech recognition.</span>;
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div className="flex flex-col  justify-center items-center h-screen w-screen text-2xl text-black">
+      <h1 className="m-2">Speech to Text Converter</h1>
+      <div>
+        <p>{transcript}</p>
+      </div>
+      <div className="flex flex-row justify-between items-center  ">
+        <button
+          onClick={SpeechRecognition.startListening}
+          type="button"
+          className="btn btn-secondary text-black p-2 m-2 "
         >
-          Learn React
-        </a>
-      </header>
+          Start Listening
+        </button>
+        <button
+          onClick={SpeechRecognition.stopListening}
+          type="button"
+          className="btn btn-secondary text-black p-2 m-2"
+        >
+          Stop Listening
+        </button>
+        <button
+          onClick={resetTranscript}
+          type="button"
+          className="btn btn-secondary text-black p-2 m-2"
+        >
+          Reset
+        </button>
+      </div>
+      <p>Microphone: {listening ? "on" : "off"}</p>
     </div>
   );
-}
+};
 
 export default App;
